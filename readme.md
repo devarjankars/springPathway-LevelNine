@@ -17,16 +17,16 @@ A **Blog Application** with:
 - Article Management
 - Comments System
 - Like/Unlike Features
-- JWT Authentication (upcoming)
+- JWT Authentication 
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Framework:** Spring Boot
-- **Database:** [Your database - H2/MySQL/PostgreSQL]
-- **Security:** Spring Security
-- **Build Tool:** Gradle/Maven
+- **Database:** MySQL
+- **Security:** Spring Security/JWT 
+- **Build Tool:** Gradle
 - **Language:** Java
 
 ---
@@ -36,11 +36,9 @@ A **Blog Application** with:
 ✅ User Registration & Login  
 ✅ Password Encryption (BCrypt)  
 ✅ User CRUD Operations  
-🔄 Article Management (In Progress)  
+🔄 Article Management  
 ⏳ Comments System  
 ⏳ JWT Authentication  
-⏳ Role-Based Access Control
-
 ---
 
 ## 💡 Learning Goals
@@ -55,10 +53,10 @@ A **Blog Application** with:
 
 ## 🎮 LOTM Level System
 
-- **Level 9:** Beginner - Basic CRUD, Spring fundamentals (Current)
-- **Level 8:** Intermediate - JWT, Security, Validation
-- **Level 7:** Advanced - Microservices, Caching
-- **Level 6:** Expert - Performance optimization, Testing
+- **Level 9:**  - The Awakened
+- **Level 8:**  - The Architect of Realms
+- **Level 7:** -The Weaver of Efficiency
+- **Level 6:** -The Master of Distributed Forces
 - ... and beyond!
 
 ---
