@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class articalController {
 
     private final ArticalServices articalServices;
-    public articalController(ArticalServices articalServices){
-        this.articalServices=articalServices;
+
+    public articalController(ArticalServices articalServices) {
+        this.articalServices = articalServices;
     }
 
 
-    @PostMapping("/post")
-    public ResponseEntity<?> createNewArtical( )
-
-
+//    @PostMapping("/post")
+//    public ResponseEntity<?> createNewArtical( )
+//
+//
 }
