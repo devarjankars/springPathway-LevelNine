@@ -18,9 +18,6 @@ public class userController {
     
        //Final is set once never change 
         private final UserService userService;
-
-
-
          public userController(UserService userService) {
              this.userService = userService;
     }
@@ -40,9 +37,9 @@ public class userController {
     @PostMapping("/login")
     public ResponseEntity<?> LoginUser(@RequestBody userRequestDto userRequestdto){
        //invoke the login repo and
-      boolean isLogin=userService.LoginUser(userRequestdto);
-      if(isLogin){
-        return ResponseEntity.status(200).body("Login sucessfull");
+      String LoginToken=userService.LoginUser(userRequestdto);
+      if(LoginToken!=null ){
+        return ResponseEntity.status(200).body("User Logged IN here is authToken: "+LoginToken);
       }
       return ResponseEntity
               .status(401)

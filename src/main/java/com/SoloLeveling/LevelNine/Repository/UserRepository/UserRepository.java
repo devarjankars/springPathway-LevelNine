@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.SoloLeveling.LevelNine.Entity.UserEntity.UserEntity;
+import java.util.Optional;
 
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
    
-   UserEntity findByUsername(String username);
+   Optional<UserEntity> findByUsername(String username);
    
 }

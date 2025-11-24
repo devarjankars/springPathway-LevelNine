@@ -8,6 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.SoloLeveling.LevelNine.DTOs.userRequestDto;
 import com.SoloLeveling.LevelNine.Entity.UserEntity.UserEntity;
+import com.SoloLeveling.LevelNine.Security.jwtUtil;
+
+import java.util.Optional;
 
 
 @Service
@@ -15,9 +18,11 @@ public class UserService {
     
     private  final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public UserService( UserRepository userRepository, PasswordEncoder passwordEncoder){
+    private  final jwtUtil  JwtUtil;
+    public UserService( UserRepository userRepository, PasswordEncoder passwordEncoder, jwtUtil JwtUtil){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.JwtUtil=JwtUtil;
     }
 
 
@@ -42,16 +47,22 @@ public class UserService {
     }
 
     //Login Service
-    public boolean LoginUser(userRequestDto userloginDto){
+    public String LoginUser(userRequestDto userloginDto){
         try {
             String username = userloginDto.getUsername();
             String password = userloginDto.getPassword();
-            UserEntity user = userRepository.findByUsername(username);
+           UserEntity user = userRepository.findByUsername(username).orElse(null);
             if (user == null) {
-                return false;
+                return null;
             }
             boolean isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
-            return isPasswordMatch;
+            if(isPasswordMatch){
+               String token= JwtUtil.createAuthToken(username);
+               return token;
+            }
+            else {
+                return "Please check your password";
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +72,7 @@ public class UserService {
     public boolean removeUserById( Long userId){
 
         try {
+
             UserEntity user = userRepository.findById(userId).orElse(null);
 
             if (user != null) {

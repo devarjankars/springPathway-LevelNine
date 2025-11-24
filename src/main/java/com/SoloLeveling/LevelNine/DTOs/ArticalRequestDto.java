@@ -10,5 +10,5 @@ public class ArticalRequestDto {
 
     private String title;
     private String content;
-    private  Long userId;
+
 }

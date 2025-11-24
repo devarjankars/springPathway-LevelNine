@@ -22,12 +22,9 @@ public class UserAuthservices implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername (String username) throws UsernameNotFoundException{
-        UserEntity user = userRepository.findByUsername(username);
-        if(user==null){
-            throw new UsernameNotFoundException("UserDetails not found! Please check user info"+username);
-        }
-        return  new User(user.getUsername(), user.getPassword(), new ArrayList<>());
-
+        UserEntity user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("UserDetails not found! Please check user info: " + username));
+        return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 
 

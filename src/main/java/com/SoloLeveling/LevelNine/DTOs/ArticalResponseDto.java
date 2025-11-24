@@ -11,13 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArticalResponseDto {
     
+      private Long articalId;
       private String title;
       private String content;
       private String authorName;
-      private Integer likesCount;
-      private Integer commentsCount;
-      private Long userId;
-      private Long articalId;
-
 
 }
