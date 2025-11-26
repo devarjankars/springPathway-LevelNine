@@ -82,8 +82,9 @@ public class ArticalServices {
         Artical updatedArtical=articalRepository.save(artical);
         ArticalResponseDto response = new ArticalResponseDto();
         response.setContent(updatedArtical.getContent());
-        response.setTitle(updatedArtical.setTitle());
+        response.setTitle(updatedArtical.getTitle());
         response.setAuthorName(updatedArtical.getUser().getUsername());
+        response.setArticalId(updatedArtical.getId());
         return response;
     }
 
