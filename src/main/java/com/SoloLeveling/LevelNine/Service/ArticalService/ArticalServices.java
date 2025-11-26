@@ -68,6 +68,24 @@ public class ArticalServices {
 
     //Updated by ID
 
+    public ArticalResponseDto updateArtical(long articalId,ArticalRequestDto articalRequestDto){
+        String usernameFromToken= SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user= userRepository.findByUsername(usernameFromToken)
+                .orElseThrow((()->new IllegalStateException("your not Authorized ")));
+        Artical artical = articalRepository.findById(articalId)
+                .orElseThrow(()->new NoSuchElementException("No such Artical Exist in the DB"));
+        if(!artical.getUser().getId().equals(user.getId()) ){
+            throw  new IllegalStateException("your UnAuthorized to perform this task");
+        }
+        artical.setTitle(articalRequestDto.getTitle());
+        artical.setContent(articalRequestDto.getContent());
+        Artical updatedArtical=articalRepository.save(artical);
+        ArticalResponseDto response = new ArticalResponseDto();
+        response.setContent(updatedArtical.getContent());
+        response.setTitle(updatedArtical.setTitle());
+        response.setAuthorName(updatedArtical.getUser().getUsername());
+        return response;
+    }
 
 
 
