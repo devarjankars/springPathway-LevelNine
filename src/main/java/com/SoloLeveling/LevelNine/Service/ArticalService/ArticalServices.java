@@ -66,6 +66,12 @@ public class ArticalServices {
          return !articalRepository.existsById(articalId);
     }
 
+    //Updated by ID
+
+
+
+
+
 
 
 
