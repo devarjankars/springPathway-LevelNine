@@ -56,11 +56,13 @@ public class ArticalController {
     public ResponseEntity<?> removeArticalById(@PathVariable long articalId){
         try {
 
-            boolean isPresent= articalServices.removeArticalById(articalId);
-            if (!isPresent){
-                return  ResponseEntity.status(200).body("Unable to Delete");
+            boolean isDeleted= articalServices.removeArticalById(articalId);
+            if (!isDeleted){
+                return  ResponseEntity.status(200).body("removed Artical sucessufuly");
+
+
             }
-            return  ResponseEntity.status(200).body("removed Artical sucessufuly");
+            return  ResponseEntity.status(500).body("Unable to Delete");
 
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(404).body(e.getMessage());
@@ -85,6 +87,11 @@ public class ArticalController {
         catch (Exception e) {
             return ResponseEntity.status(500).body(e.getMessage());
         }
+    }
+    @GetMapping("/getAllMyArticals")
+    public ResponseEntity<?> getAllMyArticals(){
+
+
     }
 
 

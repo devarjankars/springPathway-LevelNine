@@ -6,10 +6,14 @@ import com.SoloLeveling.LevelNine.Entity.UserEntity.UserEntity;
 import com.SoloLeveling.LevelNine.Repository.ArticalRepository.ArticalRepository;
 import com.SoloLeveling.LevelNine.Repository.UserRepository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -86,6 +90,40 @@ public class ArticalServices {
         response.setAuthorName(updatedArtical.getUser().getUsername());
         response.setArticalId(updatedArtical.getId());
         return response;
+    }
+
+    public Page<ArticalResponseDto> getAllUserArticals(int page , int size){
+        String LoggedUsername= SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user= userRepository.findByUsername(LoggedUsername).
+                orElseThrow(()->new IllegalStateException("Your UnAuthorized Please Do Login"));
+
+        Pageable pageable= PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Artical> articalPage= articalRepository.findByUserId(user.getId(),pageable);
+
+        return articalPage.map((artical)-> {
+            ArticalResponseDto articalResponseDto= new ArticalResponseDto();
+            articalResponseDto.setArticalId(artical.getId());
+            articalResponseDto.setAuthorName(artical.getUser().getUsername());
+            articalResponseDto.setContent(artical.getContent());
+            articalResponseDto.setTitle(artical.getTitle());
+            return articalResponseDto;
+        });
+
+
+    }
+
+    public Page<ArticalResponseDto> getAllArtical(int page , int size){
+        Pageable pageable= PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Artical> articals= articalRepository.findAll(pageable);
+
+        return articals.map((artical -> {
+            ArticalResponseDto articalResponseDto= new ArticalResponseDto();
+            articalResponseDto.setTitle(artical.getTitle());
+            articalResponseDto.setContent(artical.getContent());
+            articalResponseDto.setAuthorName(artical.getUser().getUsername());
+            articalResponseDto.setArticalId(artical.getId());
+            return articalResponseDto;
+        }));
     }
 
 
