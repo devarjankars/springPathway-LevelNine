@@ -3,8 +3,10 @@ package com.SoloLeveling.LevelNine.Controllers.articalController;
 
 import com.SoloLeveling.LevelNine.DTOs.ArticalRequestDto;
 import com.SoloLeveling.LevelNine.DTOs.ArticalResponseDto;
+import com.SoloLeveling.LevelNine.Entity.ArticalEntity.Artical;
 import com.SoloLeveling.LevelNine.Service.ArticalService.ArticalServices;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,10 +91,35 @@ public class ArticalController {
         }
     }
     @GetMapping("/getAllMyArticals")
-    public ResponseEntity<?> getAllMyArticals(){
+    public ResponseEntity<?> getAllMyArticals(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        try {
+             Page<ArticalResponseDto> articalResponseDto= articalServices.getAllUserArticals(page, size);
+            return ResponseEntity.status(200).body(articalResponseDto);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
 
 
     }
+     @GetMapping("/getAllPopularArticals")
+    public ResponseEntity<?> getAllthelatestArtical(@RequestParam (defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        try{
+            Page<ArticalResponseDto> mostPopularArtical=articalServices.getAllArtical(page, size);
+            if (mostPopularArtical.isEmpty()){
+                return ResponseEntity.status(404).body("there is No Artical as of now");
+            }
+            return ResponseEntity.status(200).body(mostPopularArtical);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+
+
+     }
 
 
 
