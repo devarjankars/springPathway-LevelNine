@@ -9,6 +9,9 @@ import com.SoloLeveling.LevelNine.Repository.ArticalRepository.ArticalRepository
 import com.SoloLeveling.LevelNine.Repository.CommentRepository.CommentRepository;
 import com.SoloLeveling.LevelNine.Repository.UserRepository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.NoSuchElementException;
@@ -106,9 +109,27 @@ public class CommentService {
     }
 
     public Page<CommentResponseDTO> getInitalComment (Long articalId , int page, int size) {
+      Artical artical = articalRepository.findById(articalId)
+              .orElseThrow(()-> new NoSuchElementException("Artical not found!")) ;
+        Pageable pageable= PageRequest.of(page, size, Sort.by("createdAt").ascending());
+        Page<Comment> initalComments= commentRepository.findByArticleAndParentCommentIsNullAndIsDeletedFalse(artical, pageable);
+        return initalComments.map((comment)->{
+            CommentResponseDTO response = new CommentResponseDTO();
+            response.setId(comment.getId());
+            response.setDepth(comment.getDepth());
+            response.setUpdatedAt(comment.getUpdatedAt());
+            response.setCreatedAt(comment.getCreatedAt());
+            response.setContent(comment.getComment());
+            response.setReplyCount(commentRepository. countByParentCommentAndIsDeletedFalse(comment));
+            response.setAuthorName(comment.getUser().getUsername());
+            response.setAuthorId(comment.getUser().getId());
+            response.setIsDeleted(comment.isDeleted());
+            response.setParentCommentId(null);
+            response.setCanRestore(false);
+            return response;
+        });
 
 
-        CommentResponseDTO response = new CommentResponseDTO();
 
     }
 
