@@ -181,13 +181,6 @@ While this started as a learning project, I've focused on building **production-
 - Edge cases handled (null safety, depth limits, authorization)
 - Following industry-standard patterns
 
-**What Makes This Different:**
-- Real problem-solving, not just following tutorials
-- Understanding WHY, not just HOW
-- Learning from code reviews and fixing bugs
-- Building features used by major platforms
-
----
 
 ## 🤝 Feedback Welcome
 
