@@ -13,9 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
-
+ @Service
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -70,7 +72,6 @@ public class CommentService {
          commentResponseDTO.setDepth(SavedComment.getDepth());
          commentResponseDTO.setAuthorName(user.getUsername());
          commentResponseDTO.setIsDeleted(SavedComment.isDeleted());
-         commentResponseDTO.setCanRestore(!SavedComment.isDeleted());
          commentResponseDTO.setReplyCount(0);
          commentResponseDTO.setAuthorId(user.getId());
          commentResponseDTO.setParentCommentId(parentComment!=null? parentComment.getId() : null);
@@ -104,7 +105,6 @@ public class CommentService {
         response.setReplyCount(commentRepository. countByParentCommentAndIsDeletedFalse(savedComment));
         response.setAuthorName(user.getUsername());
         response.setIsDeleted(false);
-        response.setCanRestore(false);
         return response;
     }
 
@@ -125,14 +125,58 @@ public class CommentService {
             response.setAuthorId(comment.getUser().getId());
             response.setIsDeleted(comment.isDeleted());
             response.setParentCommentId(null);
-            response.setCanRestore(false);
             return response;
         });
-
-
-
     }
 
+    public List<CommentResponseDTO>  getReplies(Long parentCommentId){
+        Comment parentComment= commentRepository.findById(parentCommentId).orElseThrow(()-> new NoSuchElementException("Comment not found"));
+        List<Comment>replies= commentRepository.findByParentCommentAndIsDeletedFalse(parentComment);
+        return replies.stream().map(comment->{
+            CommentResponseDTO response = new CommentResponseDTO();
+            response.setId(comment.getId());
+            response.setDepth(comment.getDepth());
+            response.setUpdatedAt(comment.getUpdatedAt());
+            response.setCreatedAt(comment.getCreatedAt());
+            response.setContent(comment.getComment());
+            response.setReplyCount(commentRepository. countByParentCommentAndIsDeletedFalse(comment));
+            response.setAuthorName(comment.getUser().getUsername());
+            response.setAuthorId(comment.getUser().getId());
+            response.setIsDeleted(comment.isDeleted());
+            response.setParentCommentId(parentCommentId);
+            return response;
 
+        }).toList();
+
+    }
+     public CommentResponseDTO removeComment(Long cmtId){
+         String currentLoggedUser= SecurityContextHolder.getContext().getAuthentication().getName();
+         UserEntity  user= userRepository.findByUsername(currentLoggedUser)
+                 .orElseThrow( ()->  new IllegalStateException("Your Not Logged In Please Logged In!"));
+         Comment existingComment= commentRepository.findById(cmtId)
+                 .orElseThrow(()-> new NoSuchElementException("Comment not found "));
+          if(!existingComment.getUser().getId().equals(user.getId())){
+              throw  new IllegalStateException("your Not Authorized to deleted");
+          }
+         if (existingComment.isDeleted()) {
+            throw  new IllegalStateException("comment already Deleted");
+         }
+             existingComment.setDeleted(true);
+           Comment SavedComment= commentRepository.save(existingComment);
+
+           CommentResponseDTO commentResponseDTO= new CommentResponseDTO();
+         commentResponseDTO.setCreatedAt(SavedComment.getCreatedAt());
+         commentResponseDTO.setUpdatedAt(SavedComment.getUpdatedAt());
+         commentResponseDTO.setContent(SavedComment.getComment());
+         commentResponseDTO.setId(SavedComment.getId());
+         commentResponseDTO.setDepth(SavedComment.getDepth());
+         commentResponseDTO.setAuthorName(user.getUsername());
+         commentResponseDTO.setIsDeleted(SavedComment.isDeleted());
+         commentResponseDTO.setReplyCount(commentRepository.countByParentCommentAndIsDeletedFalse(SavedComment));
+         commentResponseDTO.setAuthorId(user.getId());
+         commentResponseDTO.setParentCommentId(SavedComment.getParentComment()!=null? SavedComment.getParentComment().getId() : null);
+         return commentResponseDTO;
+     }
 
 }
+

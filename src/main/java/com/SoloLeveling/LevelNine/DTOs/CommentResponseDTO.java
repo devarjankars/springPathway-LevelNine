@@ -22,7 +22,6 @@ public class CommentResponseDTO {
     private LocalDateTime updatedAt;
     private Boolean isDeleted;
     private Integer depth;
-    private Boolean  canRestore;
 
 
 
