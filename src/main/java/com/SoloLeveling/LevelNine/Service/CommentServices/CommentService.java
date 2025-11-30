@@ -8,6 +8,7 @@ import com.SoloLeveling.LevelNine.Entity.UserEntity.UserEntity;
 import com.SoloLeveling.LevelNine.Repository.ArticalRepository.ArticalRepository;
 import com.SoloLeveling.LevelNine.Repository.CommentRepository.CommentRepository;
 import com.SoloLeveling.LevelNine.Repository.UserRepository.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.NoSuchElementException;
@@ -74,4 +75,43 @@ public class CommentService {
 
 
     }
+    public CommentResponseDTO updatedCommentById( Long cmtId, CommentRequestDTO commentRequestDTO){
+        //verification of data
+       String currentLoggedUser= SecurityContextHolder.getContext().getAuthentication().getName();
+       UserEntity  user= userRepository.findByUsername(currentLoggedUser)
+            .orElseThrow( ()->  new IllegalStateException("Your Not Logged In Please Logged In!"));
+       Comment existingComment= commentRepository.findById(cmtId)
+              .orElseThrow(()-> new NoSuchElementException("Your orignal Comment is Already Deleted "));
+        if( !user.getId().equals(existingComment.getUser().getId())){
+           throw  new IllegalStateException("your Not Authorized User");
+        }
+        existingComment.setComment(commentRequestDTO.getContent());
+        Comment savedComment= commentRepository.save(existingComment);
+
+        CommentResponseDTO response = new CommentResponseDTO();
+        response.setAuthorId(user.getId());
+        response.setParentCommentId(
+                savedComment.getParentComment() !=null? savedComment.getParentComment().getId():null
+        );
+        response.setId(savedComment.getId());
+        response.setDepth(savedComment.getDepth());
+        response.setUpdatedAt(savedComment.getUpdatedAt());
+        response.setCreatedAt(savedComment.getCreatedAt());
+        response.setContent(savedComment.getComment());
+        response.setReplyCount(commentRepository. countByParentCommentAndIsDeletedFalse(savedComment));
+        response.setAuthorName(user.getUsername());
+        response.setIsDeleted(false);
+        response.setCanRestore(false);
+        return response;
+    }
+
+    public Page<CommentResponseDTO> getInitalComment (Long articalId , int page, int size) {
+
+
+        CommentResponseDTO response = new CommentResponseDTO();
+
+    }
+
+
+
 }
