@@ -107,7 +107,8 @@ public class ArticalController {
 
     }
      @GetMapping("/getAllPopularArticals")
-    public ResponseEntity<?> getAllthelatestArtical(@RequestParam (defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<?> getAllthelatestArtical(
+            @RequestParam (defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
         try{
             Page<ArticalResponseDto> mostPopularArtical=articalServices.getAllArtical(page, size);
             if (mostPopularArtical.isEmpty()){
