@@ -41,7 +41,10 @@ public class CommentService {
                 .orElseThrow( ()-> new IllegalStateException( "You are not Logged In! Please logged in first"));
         Artical artical= articalRepository.findById(articalId)
                 .orElseThrow(()-> new NoSuchElementException("Artical Not Found! Unable to create comment on Not Found Entity"));
-        Comment parentComment = commentRepository.findById(commentRequestDTO.getParentCommentId()).orElse(null);
+        Comment parentComment = null;
+        if (commentRequestDTO.getParentCommentId() != null) {
+            parentComment = commentRepository.findById(commentRequestDTO.getParentCommentId()).orElse(null);
+        }
            if( parentComment!=null &&!parentComment.getArticle().getId().equals(articalId)){
            throw new IllegalStateException("No Parent Comment FOund to Add your Reply!");
            }
