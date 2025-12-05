@@ -51,14 +51,6 @@ Article: "Spring Boot Tutorial"
       └─ Reply: "Agreed!" (depth 1)
 ```
 
-**Why This Matters:**
-This isn't a simple TODO app - it's a **production-ready feature** used by major platforms. Building this taught me:
-- Complex database relationships
-- Performance optimization (lazy loading, pagination)
-- Security best practices (authorization, validation)
-- Real-world problem solving 
-
----
 
 ## 🛠️ Tech Stack
 
@@ -116,7 +108,6 @@ This isn't a simple TODO app - it's a **production-ready feature** used by major
 
 ## 💡 Learning Goals & Achievements
 
-### Mastered:
 ✅ **Spring Boot Fundamentals**
   - Dependency Injection
   - Service Layer Architecture
@@ -165,19 +156,6 @@ This isn't a simple TODO app - it's a **production-ready feature** used by major
 - ... and beyond!
 
 ---
-
-## 📝 Notes
-
-**This is NOT just another TODO app!**
-
-While this started as a learning project, I've focused on building **production-ready features** that solve real-world problems:
-
-- ✅ **Nested comments** - Same complexity as Reddit/YouTube
-- ✅ **Like system** - Social engagement features
-- ✅ **Security** - Proper authorization and validation
-- ✅ **Performance** - Pagination and lazy loading
-- ✅ **Scalability** - Designed to handle thousands of users
-
 **Code Quality:**
 - All methods reviewed and refactored for production readiness
 - Security vulnerabilities identified and fixed
