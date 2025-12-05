@@ -18,7 +18,7 @@ A **Production-Grade Blog Application** solving real-world problems:
 - **User Management** - Registration, Login, CRUD with BCrypt encryption
 - **Article Management** - Full CRUD with pagination and authorization
 - **Nested Comment System** - Reddit/YouTube-style threaded discussions (see below)
-- **Like/Unlike Features** - Social engagement (coming soon)
+- **Like/Unlike Features** - Social engagement for articles
 - **JWT Authentication** - Secure token-based auth
 
 ### 🌟 Featured: Nested Comment System
@@ -95,18 +95,20 @@ This isn't a simple TODO app - it's a **production-ready feature** used by major
   - Reply count tracking
   - Security & authorization
 
+✅ **Like/Unlike System**
+  - Toggle like/unlike for articles
+  - Get like count for articles
+  - Proper exception handling
+  - RESTful endpoints
+
 ### In Progress:
 🔄 **Comment Features**
   - Get replies endpoint
   - Restore deleted comments
   - Comment search
 
-⏳ **Like/Unlike System**
-  - Like articles
-  - Like comments
-  - Upvote/downvote functionality
-
 ⏳ **Advanced Features**
+  - Like comments
   - Comment sorting (by date, popularity)
   - User profiles
   - Article categories/tags  
@@ -171,6 +173,7 @@ This isn't a simple TODO app - it's a **production-ready feature** used by major
 While this started as a learning project, I've focused on building **production-ready features** that solve real-world problems:
 
 - ✅ **Nested comments** - Same complexity as Reddit/YouTube
+- ✅ **Like system** - Social engagement features
 - ✅ **Security** - Proper authorization and validation
 - ✅ **Performance** - Pagination and lazy loading
 - ✅ **Scalability** - Designed to handle thousands of users
