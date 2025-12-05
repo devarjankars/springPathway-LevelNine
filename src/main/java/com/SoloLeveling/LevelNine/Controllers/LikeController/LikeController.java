@@ -18,12 +18,12 @@ public class LikeController {
          this.likeService=likeService;
      }
 
-     @PostMapping("/article/{articleId}/toggleLike")
+     @PostMapping("/articles/{articleId}/like")
     public ResponseEntity<?> ToggleLikeBtnApi(@PathVariable Long articleId){
          try{
 
              LikeResponseDTO likeResponseDTO= likeService.toggleRequest(articleId);
-             return ResponseEntity.status(201).body(likeResponseDTO);
+             return ResponseEntity.ok(likeResponseDTO);
          }  catch (IllegalStateException e) {
              return ResponseEntity.status(400).body(e.getMessage());
          }catch (NoSuchElementException e) {
@@ -34,11 +34,11 @@ public class LikeController {
          }
      }
 
-      @GetMapping("/article/{articleId}/Likes")
+      @GetMapping("/articles/{articleId}/likes")
       public ResponseEntity<?> getLikes(@PathVariable Long articleId){
           try{
               LikeResponseDTO likeResponseDTO= likeService.getLikedCount(articleId);
-              return ResponseEntity.status(201).body(likeResponseDTO);
+              return ResponseEntity.ok(likeResponseDTO);
 
           }  catch (IllegalStateException e) {
               return ResponseEntity.status(400).body(e.getMessage());
