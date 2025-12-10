@@ -86,7 +86,6 @@ Article: "Spring Boot Tutorial"
   - Depth validation (max 5 levels)
   - Reply count tracking
   - Security & authorization
-
 ✅ **Like/Unlike System**
   - Toggle like/unlike for articles
   - Get like count for articles
